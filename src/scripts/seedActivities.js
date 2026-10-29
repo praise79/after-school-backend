@@ -2,6 +2,7 @@ require('dotenv').config({ quiet: true })
 
 const { connectDB, closeDB } = require('../config/db')
 
+// Sample activities to seed into the database
 const activities = [
   {
     name: 'Code Creators Club',

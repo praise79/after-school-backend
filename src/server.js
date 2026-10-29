@@ -23,6 +23,7 @@ async function shutdown(signal) {
   process.exit(0)
 }
 
+// Handle termination signals for graceful shutdown
 process.on('SIGINT', () => shutdown('SIGINT'))
 process.on('SIGTERM', () => shutdown('SIGTERM')) 
 
