@@ -13,8 +13,7 @@ async function startServer() {
   server = app.listen(port, () => console.log(`API listening on port ${port}`))
 }
 
-
-
+// shutdown gracefully shuts down the server and closes the database connection
 async function shutdown(signal) {
   console.log(`${signal} received. Closing server...`)
   if (server) {
@@ -27,6 +26,7 @@ async function shutdown(signal) {
 process.on('SIGINT', () => shutdown('SIGINT'))
 process.on('SIGTERM', () => shutdown('SIGTERM')) 
 
+// Start the server
 startServer().catch((error) => {
   console.error('Unable to start API:', error.message)
   process.exit(1)
