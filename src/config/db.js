@@ -3,6 +3,7 @@ const { MongoClient, ServerApiVersion } = require('mongodb')
 let client
 let database
 
+// Connects to the MongoDB database using the connection string from environment variables, and creates necessary indexes for collections.
 async function connectDB() {
   const uri = process.env.MONGODB_URI
   const dbName = process.env.DB_NAME || 'after_school'
@@ -35,6 +36,7 @@ async function connectDB() {
   return database
 }
 
+// getSafeHost extracts the hostname from the MongoDB URI for logging purposes, returning a default string if parsing fails.
 function getSafeHost(uri) {
   try {
     return new URL(uri).hostname || 'MongoDB deployment'
