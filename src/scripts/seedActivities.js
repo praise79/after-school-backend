@@ -54,6 +54,7 @@ const activities = [
   },
 ]
 
+// Seed activities into the database without replacing existing booking totals
 async function seedActivities() {
   const db = await connectDB()
   const collection = db.collection('activities')
