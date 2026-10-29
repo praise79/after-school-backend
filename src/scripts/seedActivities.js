@@ -74,6 +74,7 @@ async function seedActivities() {
   console.log(`Seeded ${activities.length} activities without replacing existing booking totals.`)
 }
 
+// Connect to the database, seed activities, and close the database connection
 seedActivities()
   .catch((error) => {
     console.error('Unable to seed activities:', error.message)
