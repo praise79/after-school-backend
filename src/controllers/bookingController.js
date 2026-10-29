@@ -7,6 +7,7 @@ function createReference() {
   return `BF-${Date.now().toString(36).toUpperCase()}-${crypto.randomBytes(6).toString('hex').toUpperCase()}`
 }
 
+// createBooking function handles the creation of a new booking, ensuring that the requested number of places does not exceed the activity's capacity.
 async function createBooking(req, res) {
   const { data, errors, isValid } = validateBooking(req.body)
   if (!isValid) {
@@ -67,6 +68,7 @@ async function createBooking(req, res) {
   return res.status(201).json({ success: true, data: { reference } })
 }
 
+// getBookingByReference retrieves a booking by its reference number, ensuring the reference format is valid and the booking exists.
 async function getBookingByReference(req, res) {
   const reference = String(req.params.reference || '').trim().toUpperCase()
   if (!/^BF-[A-Z0-9]+-[A-F0-9]{12}$/.test(reference)) {
