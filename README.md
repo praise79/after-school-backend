@@ -11,6 +11,10 @@ Express REST API for the Bright Futures after-school activities coursework. It u
 
 The server connects to Atlas and creates required unique indexes before listening. It exits with a non-zero code if the connection fails.
 
+## Seed activities
+
+Run `npm run seed` to upsert four fictional activities (technology, art, music and sport). It uses the native driver and preserves existing `placesBooked` values, so it is safe to run again after test bookings.
+
 ## Routes
 
 | Method | Route | Purpose |
