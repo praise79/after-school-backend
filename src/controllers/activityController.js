@@ -11,7 +11,6 @@ async function listActivities(req, res) {
   res.json({ success: true, data: activities })
 }
 
-// getActivity retrieves a single activity by its ID, ensuring the ID is valid and the activity is active
 async function getActivity(req, res) {
   const { id } = req.params
   if (!ObjectId.isValid(id)) {
