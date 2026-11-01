@@ -4,6 +4,13 @@ const { listActivities, getActivity } = require('../controllers/activityControll
 
 const router = express.Router()
 
+// @desc    Get all activities
+// @route   GET /api/activities
+// @access  Public
+
+// @desc    Get single activity
+// @route   GET /api/activities/:id
+// @access  Public
 router.get('/', asyncHandler(listActivities))
 router.get('/:id', asyncHandler(getActivity))
 
