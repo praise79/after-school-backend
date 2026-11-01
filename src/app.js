@@ -14,12 +14,19 @@ const { notFoundHandler, errorHandler } = require('./middleware/errorHandler')
 
 function allowedOrigins() {
   const clientUrl = process.env.CLIENT_URL
+  const localOrigins = [
+    'http://localhost:5173',
+    'http://localhost:8080',
+    'http://127.0.0.1:5173',
+    'http://127.0.0.1:8080',
+  ]
   if (clientUrl) {
-    return clientUrl.split(',').map((url) => url.trim()).filter(Boolean).map((url) => {
+    const configuredOrigins = clientUrl.split(',').map((url) => url.trim()).filter(Boolean).map((url) => {
       try { return new URL(url).origin } catch { return url.replace(/\/$/, '') }
     })
+    return [...new Set([...configuredOrigins, ...localOrigins])]
   }
-  return process.env.NODE_ENV === 'production' ? [] : ['http://localhost:5173']
+  return localOrigins
 }
 
 const app = express()
