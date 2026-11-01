@@ -38,7 +38,7 @@ Responses use `{ "success": true, "data": ... }` on success and `{ "success": fa
 
 `bookings` records include a unique `reference`, the `activityId` as an `ObjectId`, the student and guardian contact fields, `places`, the server-calculated `totalPrice`, `status`, and `createdAt`. No payment-card information is accepted or stored.
 
-The assessed `lesson` collection stores `topic`, `subject`, `location`, `price`, `space`, `teacherFirstName`, `teacherLastName`, `image`, `isActive`, `createdAt`, and `updatedAt`. The assessed `order` collection stores `name`, `phone`, `lessonIDs`, `numberOfSpaces`, `reference`, and `createdAt`.
+The assessed `lesson` collection stores `topic`, `subject`, `location`, `price`, `currency` (`USD`), `space`, `teacherFirstName`, `teacherLastName`, `image`, `isActive`, `createdAt`, and `updatedAt`. The assessed `order` collection stores `name`, `phone`, `lessonIDs`, `numberOfSpaces`, `reference`, and `createdAt`.
 
 Every request is logged as `method url time status duration` in the Render console. Lesson images are served by the Express static middleware at `/images`.
 
