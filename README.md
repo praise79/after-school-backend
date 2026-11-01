@@ -13,7 +13,7 @@ The server connects to Atlas and creates required unique indexes before listenin
 
 ## Seed activities
 
-Run `npm run seed` to upsert four fictional activities (technology, art, music and sport). It uses the native driver and preserves existing `placesBooked` values, so it is safe to run again after test bookings.
+Run `npm run seed` to upsert the original activity catalogue and ten lesson records in the `lesson` collection. It uses the native driver and can be run again safely.
 
 ## Routes
 
@@ -24,6 +24,11 @@ Run `npm run seed` to upsert four fictional activities (technology, art, music a
 | GET | `/api/activities/:id` | Get one active activity |
 | POST | `/api/bookings` | Reserve places and create a booking |
 | GET | `/api/bookings/:reference` | Minimal booking confirmation lookup |
+| GET | `/lessons` | List ten lessons; supports backend `search`, `teacher`, `sortBy` and `direction` query parameters |
+| PUT | `/lessons/:id` | Set a lesson's remaining `space` to any non-negative whole number |
+| POST | `/order` | Validate and save a lesson order in the `order` collection |
+| GET | `/enrolment/:lessonid` | Return the number of spaces already bought for a lesson |
+| GET | `/images/lesson.svg` | Static lesson image served by Express |
 
 Responses use `{ "success": true, "data": ... }` on success and `{ "success": false, "message": "..." }` on errors.
 
@@ -32,6 +37,10 @@ Responses use `{ "success": true, "data": ... }` on success and `{ "success": fa
 `activities` must contain `name`, `slug`, `description`, `category`, `minAge`, `maxAge`, `schedule`, `price`, `capacity`, `placesBooked`, `isActive`, `createdAt`, and `updatedAt`. `slug` has a unique index.
 
 `bookings` records include a unique `reference`, the `activityId` as an `ObjectId`, the student and guardian contact fields, `places`, the server-calculated `totalPrice`, `status`, and `createdAt`. No payment-card information is accepted or stored.
+
+The assessed `lesson` collection stores `topic`, `subject`, `location`, `price`, `space`, `teacherFirstName`, `teacherLastName`, `image`, `isActive`, `createdAt`, and `updatedAt`. The assessed `order` collection stores `name`, `phone`, `lessonIDs`, `numberOfSpaces`, `reference`, and `createdAt`.
+
+Every request is logged as `method url time status duration` in the Render console. Lesson images are served by the Express static middleware at `/images`.
 
 ## Booking safety
 

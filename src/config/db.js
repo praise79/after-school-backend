@@ -49,6 +49,8 @@ async function createIndexes(db) {
   await Promise.all([
     db.collection('activities').createIndex({ slug: 1 }, { unique: true }),
     db.collection('bookings').createIndex({ reference: 1 }, { unique: true }),
+    db.collection('lesson').createIndex({ topic: 1 }, { unique: true }),
+    db.collection('order').createIndex({ reference: 1 }, { unique: true }),
   ])
 }
 

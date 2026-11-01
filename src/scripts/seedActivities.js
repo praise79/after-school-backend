@@ -90,6 +90,19 @@ const activities = [
   },
 ]
 
+const lessons = [
+  { topic: 'Code Creators Club', subject: 'Technology', location: 'Main lab', price: 18000, space: 9, teacherFirstName: 'Ava', teacherLastName: 'Bello', image: '/images/lesson.svg' },
+  { topic: 'Colour and Clay Studio', subject: 'Art', location: 'Art room', price: 10000, space: 10, teacherFirstName: 'Tola', teacherLastName: 'Adeyemi', image: '/images/lesson.svg' },
+  { topic: 'Junior Sports Lab', subject: 'Sport', location: 'Sports hall', price: 12000, space: 9, teacherFirstName: 'Musa', teacherLastName: 'Okafor', image: '/images/lesson.svg' },
+  { topic: 'Junior Music Makers', subject: 'Music', location: 'Music room', price: 14000, space: 9, teacherFirstName: 'Zara', teacherLastName: 'Ibrahim', image: '/images/lesson.svg' },
+  { topic: 'Little Gardeners', subject: 'Nature', location: 'School garden', price: 9000, space: 7, teacherFirstName: 'Chidi', teacherLastName: 'Okoro', image: '/images/lesson.svg' },
+  { topic: 'Story Makers', subject: 'Writing', location: 'Library', price: 11000, space: 8, teacherFirstName: 'Amaka', teacherLastName: 'Yusuf', image: '/images/lesson.svg' },
+  { topic: 'Build and Tinker Lab', subject: 'Making', location: 'Design lab', price: 15000, space: 8, teacherFirstName: 'Daniel', teacherLastName: 'Obi', image: '/images/lesson.svg' },
+  { topic: 'Young Chefs Kitchen', subject: 'Cooking', location: 'Food lab', price: 16000, space: 8, teacherFirstName: 'Fatima', teacherLastName: 'Bello', image: '/images/lesson.svg' },
+  { topic: 'Dance and Movement', subject: 'Dance', location: 'Dance studio', price: 13000, space: 10, teacherFirstName: 'Grace', teacherLastName: 'Eze', image: '/images/lesson.svg' },
+  { topic: 'Photo Explorers', subject: 'Media', location: 'Media room', price: 17000, space: 6, teacherFirstName: 'Kene', teacherLastName: 'Nwosu', image: '/images/lesson.svg' },
+]
+
 // Seed activities into the database without replacing existing booking totals
 async function seedActivities() {
   const db = await connectDB()
@@ -108,6 +121,17 @@ async function seedActivities() {
   }
 
   console.log(`Seeded ${activities.length} activities without replacing existing booking totals.`)
+
+  const lessonsCollection = db.collection('lesson')
+  for (const lesson of lessons) {
+    await lessonsCollection.updateOne(
+      { topic: lesson.topic },
+      { $set: { ...lesson, isActive: true, updatedAt: now }, $setOnInsert: { createdAt: now } },
+      { upsert: true },
+    )
+  }
+
+  console.log(`Seeded ${lessons.length} lessons in the lesson collection.`)
 }
 
 // Connect to the database, seed activities, and close the database connection
