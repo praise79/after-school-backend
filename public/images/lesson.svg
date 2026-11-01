@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 480" role="img" aria-labelledby="title desc">
-  <title id="title">After-school lesson</title>
-  <desc id="desc">A colourful abstract illustration for an after-school lesson</desc>
-  <rect width="800" height="480" fill="#f5f5f5"/>
-  <circle cx="170" cy="145" r="100" fill="#ffcf33"/>
-  <circle cx="570" cy="320" r="140" fill="#38bdf8"/>
-  <path d="M120 360c90-120 170-120 250 0s180 120 310-40" fill="none" stroke="#333" stroke-width="22" stroke-linecap="round"/>
-  <path d="M260 80l95 80-95 80-95-80z" fill="#f05a7e"/>
-</svg>
