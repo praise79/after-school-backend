@@ -1,6 +1,6 @@
-# Bright Futures backend
+# Praise backend
 
-Express REST API for the Bright Futures after-school activities coursework. It uses MongoDB's official native `mongodb` driver and `MongoClient`; it does not use Mongoose or another ODM.
+Express REST API for the Praise after-school activities coursework. It uses MongoDB's official native `mongodb` driver and `MongoClient`; it does not use Mongoose or another ODM.
 
 ## Setup
 

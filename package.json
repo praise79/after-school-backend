@@ -2,7 +2,7 @@
   "name": "after-school-backend",
   "version": "1.0.0",
   "private": true,
-  "description": "REST API for Bright Futures after-school activities",
+  "description": "REST API for Praise after-school activities",
   "main": "src/server.js",
   "scripts": {
     "dev": "nodemon src/server.js",
