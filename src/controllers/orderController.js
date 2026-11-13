@@ -2,24 +2,22 @@ const { ObjectId } = require('mongodb')
 const { getDB } = require('../config/db')
 
 const namePattern = /^[a-zA-Z\s]+$/
+const phonePattern = /^[0-9]+$/
 
 function createReference() {
   return `OR-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).slice(2, 8).toUpperCase()}`
 }
 
 async function createOrder(req, res) {
-  const { name, phone, phoneCountry, lessonIDs, numberOfSpaces } = req.body || {}
+  const { name, phone, lessonIDs, numberOfSpaces } = req.body || {}
   const ids = Array.isArray(lessonIDs) ? [...new Set(lessonIDs.map(String))] : []
   const totalSpaces = Number(numberOfSpaces || ids.length)
 
   if (!namePattern.test(String(name || '').trim())) {
     return res.status(400).json({ success: false, message: 'Name must contain letters and spaces only.' })
   }
-  if (typeof phone !== 'string' || !/^\+[1-9]\d{7,14}$/.test(phone)) {
-    return res.status(400).json({ success: false, message: 'Enter a valid phone number with its international country code.' })
-  }
-  if (typeof phoneCountry !== 'string' || !/^[A-Z]{2}$/.test(phoneCountry)) {
-    return res.status(400).json({ success: false, message: 'Select a valid country.' })
+  if (!phonePattern.test(String(phone || ''))) {
+    return res.status(400).json({ success: false, message: 'Phone must contain numbers only.' })
   }
   if (!ids.length || !ids.every((id) => ObjectId.isValid(id))) {
     return res.status(400).json({ success: false, message: 'At least one valid lesson is required.' })
@@ -49,7 +47,6 @@ async function createOrder(req, res) {
       reference: createReference(),
       name: String(name).trim(),
       phone: String(phone),
-      phoneCountry,
       lessonIDs: ids,
       numberOfSpaces: totalSpaces,
       createdAt: new Date(),
