@@ -1,6 +1,5 @@
 const { ObjectId } = require('mongodb')
 const { getDB } = require('../config/db')
-const { parsePhoneNumberFromString } = require('libphonenumber-js')
 
 const namePattern = /^[a-zA-Z\s]+$/
 
@@ -16,12 +15,11 @@ async function createOrder(req, res) {
   if (!namePattern.test(String(name || '').trim())) {
     return res.status(400).json({ success: false, message: 'Name must contain letters and spaces only.' })
   }
-  const parsedPhone = typeof phone === 'string' ? parsePhoneNumberFromString(phone) : null
-  if (!parsedPhone || !parsedPhone.isValid() || parsedPhone.number !== phone) {
-    return res.status(400).json({ success: false, message: 'Enter a valid international phone number.' })
+  if (typeof phone !== 'string' || !/^\+[1-9]\d{7,14}$/.test(phone)) {
+    return res.status(400).json({ success: false, message: 'Enter a valid phone number with its international country code.' })
   }
-  if (typeof phoneCountry !== 'string' || !/^[A-Z]{2}$/.test(phoneCountry) || parsedPhone.country !== phoneCountry) {
-    return res.status(400).json({ success: false, message: 'The phone number does not match the selected country.' })
+  if (typeof phoneCountry !== 'string' || !/^[A-Z]{2}$/.test(phoneCountry)) {
+    return res.status(400).json({ success: false, message: 'Select a valid country.' })
   }
   if (!ids.length || !ids.every((id) => ObjectId.isValid(id))) {
     return res.status(400).json({ success: false, message: 'At least one valid lesson is required.' })
@@ -50,7 +48,7 @@ async function createOrder(req, res) {
     const order = {
       reference: createReference(),
       name: String(name).trim(),
-      phone: parsedPhone.number,
+      phone: String(phone),
       phoneCountry,
       lessonIDs: ids,
       numberOfSpaces: totalSpaces,
