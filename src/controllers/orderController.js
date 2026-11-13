@@ -1,23 +1,27 @@
 const { ObjectId } = require('mongodb')
 const { getDB } = require('../config/db')
+const { parsePhoneNumberFromString } = require('libphonenumber-js')
 
 const namePattern = /^[a-zA-Z\s]+$/
-const phonePattern = /^[0-9]+$/
 
 function createReference() {
   return `OR-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).slice(2, 8).toUpperCase()}`
 }
 
 async function createOrder(req, res) {
-  const { name, phone, lessonIDs, numberOfSpaces } = req.body || {}
+  const { name, phone, phoneCountry, lessonIDs, numberOfSpaces } = req.body || {}
   const ids = Array.isArray(lessonIDs) ? [...new Set(lessonIDs.map(String))] : []
   const totalSpaces = Number(numberOfSpaces || ids.length)
 
   if (!namePattern.test(String(name || '').trim())) {
     return res.status(400).json({ success: false, message: 'Name must contain letters and spaces only.' })
   }
-  if (!phonePattern.test(String(phone || ''))) {
-    return res.status(400).json({ success: false, message: 'Phone must contain numbers only.' })
+  const parsedPhone = typeof phone === 'string' ? parsePhoneNumberFromString(phone) : null
+  if (!parsedPhone || !parsedPhone.isValid() || parsedPhone.number !== phone) {
+    return res.status(400).json({ success: false, message: 'Enter a valid international phone number.' })
+  }
+  if (typeof phoneCountry !== 'string' || !/^[A-Z]{2}$/.test(phoneCountry) || parsedPhone.country !== phoneCountry) {
+    return res.status(400).json({ success: false, message: 'The phone number does not match the selected country.' })
   }
   if (!ids.length || !ids.every((id) => ObjectId.isValid(id))) {
     return res.status(400).json({ success: false, message: 'At least one valid lesson is required.' })
@@ -46,7 +50,8 @@ async function createOrder(req, res) {
     const order = {
       reference: createReference(),
       name: String(name).trim(),
-      phone: String(phone),
+      phone: parsedPhone.number,
+      phoneCountry,
       lessonIDs: ids,
       numberOfSpaces: totalSpaces,
       createdAt: new Date(),
